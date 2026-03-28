@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Macintosh System 1 Web OS</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div id="boot-screen" class="boot-screen">
+    <div class="boot-window">
+      <div class="boot-title">Macintosh</div>
+      <div class="boot-content">
+        <div class="boot-icon"><img src="assets/apple-logo.png" alt="Apple logo" /></div>
+        <p>Starting up...</p>
+        <div class="progress"><div id="boot-progress"></div></div>
+      </div>
+    </div>
+  </div>
+
+  <div id="shutdown-screen" class="shutdown-screen hidden">
+    <div class="shutdown-message">It is now safe to close this browser tab.</div>
+    <button id="power-on">Power On</button>
+  </div>
+
+  <div id="os" class="os hidden"></div>
+
+  <script src="js/main.js"></script>
+</body>
+</html>
