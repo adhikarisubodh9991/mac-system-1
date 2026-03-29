@@ -10,7 +10,7 @@
   "editor.autoIndent": "none",
   "emmet.showSuggestionsAsSnippets": false,
   "emmet.triggerExpansionOnTab": false,
-  "editor.wordBasedSuggestions": false,
+  "editor.wordBasedSuggestions": "off",
   "editor.suggest.showKeywords": false,
   "editor.wordWrap": "off",
   "editor.minimap.enabled": false,
