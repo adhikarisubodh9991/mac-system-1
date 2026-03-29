@@ -25,5 +25,53 @@ function bootSystem() {
   }, 42);
 }
 
-powerOnBtn.addEventListener('click', bootSystem);
-bootSystem();
+function setupMenus() {
+  const menuItems = [...document.querySelectorAll('.menu-item')];
+  const dropdowns = [...document.querySelectorAll('.dropdown')];
+
+  const closeMenus = () => {
+    dropdowns.forEach((d) => d.classList.add('hidden'));
+    menuItems.forEach((i) => i.classList.remove('active'));
+  };
+
+  menuItems.forEach((item) => {
+    item.addEventListener('click', (event) => {
+      event.stopPropagation();
+      const target = document.getElementById(`menu-${item.dataset.menu}`);
+      const shouldOpen = target.classList.contains('hidden');
+      closeMenus();
+      if (shouldOpen) {
+        item.classList.add('active');
+        target.classList.remove('hidden');
+      }
+    });
+  });
+
+  document.addEventListener('click', closeMenus);
+
+  dropdowns.forEach((menu) => {
+    menu.addEventListener('click', (event) => {
+      const button = event.target.closest('button');
+      if (!button) return;
+      closeMenus();
+      runAction(button.dataset.action);
+    });
+  });
+}
+
+function runAction(action) {
+  if (action === 'restart') return bootSystem();
+  if (action === 'shutdown') {
+    os.classList.add('hidden');
+    shutdownScreen.classList.remove('hidden');
+    return;
+  }
+}
+
+function init() {
+  setupMenus();
+  bootSystem();
+}
+
+powerOnBtn.addEventListener('click', init);
+init();
