@@ -57,9 +57,41 @@ class DesktopManager {
   }
 
   attachIconInteraction(iconEl, appName) {
+    let dragStart = null;
+    let hasMoved = false;
+
     iconEl.addEventListener('click', (event) => {
       event.stopPropagation();
       this.selectIcon(iconEl);
+    });
+
+    iconEl.addEventListener('mousedown', (event) => {
+      const rect = iconEl.getBoundingClientRect();
+      const deskRect = this.desktopEl.getBoundingClientRect();
+      dragStart = {
+        offsetX: event.clientX - rect.left,
+        offsetY: event.clientY - rect.top,
+        deskLeft: deskRect.left,
+        deskTop: deskRect.top
+      };
+      hasMoved = false;
+      this.selectIcon(iconEl);
+    });
+
+    window.addEventListener('mousemove', (event) => {
+      if (!dragStart) return;
+      hasMoved = true;
+
+      const left = Math.max(0, Math.min(event.clientX - dragStart.deskLeft - dragStart.offsetX, this.desktopEl.clientWidth - iconEl.offsetWidth));
+      const top = Math.max(0, Math.min(event.clientY - dragStart.deskTop - dragStart.offsetY, this.desktopEl.clientHeight - iconEl.offsetHeight));
+
+      iconEl.style.left = `${left}px`;
+      iconEl.style.top = `${top}px`;
+    });
+
+    window.addEventListener('mouseup', () => {
+      dragStart = null;
+      hasMoved = false;
     });
   }
 
