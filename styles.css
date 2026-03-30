@@ -43,6 +43,20 @@ body {
   color: #fff;
 }
 
+.boot-sequence {
+  width: min(92vw, 980px);
+  height: min(92vh, 680px);
+  display: grid;
+  place-items: center;
+}
+
+#boot-sequence-image {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+  border: 2px solid #fff;
+}
+
 .boot-window {
   width: 320px;
   background: #1d1d1d;
@@ -66,16 +80,6 @@ body {
   display: grid;
   place-items: center;
   margin-bottom: 4px;
-}
-
-.boot-icon img {
-  width: auto;
-  height: 44px;
-  max-width: 44px;
-  object-fit: contain;
-  object-position: center;
-  display: block;
-  image-rendering: auto;
 }
 
 .progress {
@@ -102,8 +106,6 @@ body {
 .os {
   background: var(--bg);
   border: 3px solid #000;
-  display: flex;
-  flex-direction: column;
 }
 
 .menu-bar {
@@ -151,6 +153,16 @@ body {
   image-rendering: auto;
 }
 
+.boot-icon img {
+  width: auto;
+  height: 44px;
+  max-width: 44px;
+  object-fit: contain;
+  object-position: center;
+  display: block;
+  image-rendering: auto;
+}
+
 .menu-item:hover,
 .menu-item.active {
   border-color: #000;
@@ -191,8 +203,21 @@ body {
 
 .desktop {
   position: relative;
-  flex: 1;
+  height: calc(100% - var(--menu-h));
   overflow: hidden;
+}
+
+.wallpaper {
+  background-color: #000;
+  background-image: url('assets/wallpaper.png');
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+}
+
+.desktop-icons {
+  position: absolute;
+  inset: 0;
 }
 
 .pattern-grid {
@@ -215,11 +240,6 @@ body {
 
 .pattern-plain {
   background: #d6d6d6;
-}
-
-.desktop-icons {
-  position: absolute;
-  inset: 0;
 }
 
 .desktop-icon {
@@ -326,4 +346,145 @@ body {
   cursor: nwse-resize;
   background:
     linear-gradient(135deg, transparent 0 46%, #000 46% 54%, transparent 54% 100%);
+}
+
+.finder-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.finder-header,
+.finder-row {
+  display: grid;
+  grid-template-columns: 1.5fr 0.9fr 0.8fr;
+  gap: 6px;
+  align-items: center;
+}
+
+.finder-header {
+  border-bottom: 2px solid #000;
+  padding-bottom: 6px;
+  font-weight: 700;
+}
+
+.finder-files {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.finder-row {
+  border: 1px solid #c8c8c8;
+  padding: 4px 6px;
+}
+
+.finder-row:hover {
+  border-color: #000;
+  background: #f3f3f3;
+}
+
+.finder-open {
+  border: 2px solid #000;
+  background: #fff;
+  padding: 2px 6px;
+  font: inherit;
+  cursor: pointer;
+}
+
+#notes-area,
+#download-url,
+#calc-display {
+  width: 100%;
+  border: 2px solid #000;
+  background: #fff;
+  color: #000;
+  font: inherit;
+}
+
+#notes-area {
+  height: calc(100% - 2px);
+  resize: none;
+  padding: 8px;
+}
+
+.download-wrap {
+  display: grid;
+  gap: 8px;
+}
+
+.download-wrap button,
+#empty-trash-btn,
+.paint-toolbar button,
+.pattern-buttons button,
+.calc-grid button {
+  border: 2px solid #000;
+  background: #fff;
+  font: inherit;
+  padding: 4px 8px;
+  cursor: pointer;
+}
+
+.download-wrap button:active,
+.paint-toolbar button:active,
+.pattern-buttons button:active,
+.calc-grid button:active,
+#empty-trash-btn:active {
+  transform: translateY(1px);
+}
+
+.paint-wrap {
+  display: grid;
+  grid-template-columns: 132px 1fr;
+  gap: 10px;
+  height: 100%;
+}
+
+.paint-toolbar {
+  display: grid;
+  gap: 6px;
+  align-content: start;
+}
+
+.paint-toolbar button.active {
+  background: #000;
+  color: #fff;
+}
+
+.paint-canvas-wrap {
+  border: 2px solid #000;
+  background:
+    linear-gradient(90deg, rgba(0, 0, 0, 0.07) 1px, transparent 1px),
+    linear-gradient(rgba(0, 0, 0, 0.07) 1px, transparent 1px),
+    #fff;
+  background-size: 8px 8px;
+  overflow: auto;
+  display: grid;
+  place-items: center;
+}
+
+#paint-canvas {
+  border: 1px solid #000;
+  width: min(100%, 512px);
+  height: auto;
+  background: #fff;
+  cursor: crosshair;
+}
+
+.calc-grid {
+  margin-top: 8px;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 6px;
+}
+
+.control-panel {
+  display: grid;
+  gap: 8px;
+}
+
+.pattern-buttons {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
 }

@@ -3,13 +3,25 @@ const bootProgress = document.getElementById('boot-progress');
 const shutdownScreen = document.getElementById('shutdown-screen');
 const powerOnBtn = document.getElementById('power-on');
 const os = document.getElementById('os');
+
 const desktopEl = document.getElementById('desktop');
 const desktopIconsEl = document.getElementById('desktop-icons');
+const activeAppEl = document.getElementById('active-app');
+const clockEl = document.getElementById('clock');
 
-const windowManager = new WindowManager(desktopEl, null);
+const windowManager = new WindowManager(desktopEl, activeAppEl);
+const apps = new AppsManager({ windowManager, desktopEl });
+
+const appIdMap = {
+  about: 'window-about',
+  finder: 'window-finder',
+  calculator: 'window-calculator',
+  control: 'window-control',
+  trash: 'window-trash'
+};
+
 const desktop = new DesktopManager(desktopEl, desktopIconsEl, (appName) => {
-  if (appName === 'finder') windowManager.open('finder');
-  if (appName === 'trash') windowManager.open('trash');
+  if (appIdMap[appName]) windowManager.open(appName);
 });
 
 function bootSystem() {
@@ -29,9 +41,29 @@ function bootSystem() {
         bootScreen.classList.add('hidden');
         os.classList.remove('hidden');
         setupDesktop();
+        desktop.cleanUpIcons();
+        windowManager.open('finder');
       }, 220);
     }
   }, 42);
+}
+
+function setupClock() {
+  if (!clockEl) return;
+
+  const update = () => {
+    clockEl.textContent = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+  };
+
+  update();
+  setInterval(update, 1000);
+}
+
+function setupWindows() {
+  Object.entries(appIdMap).forEach(([key, elementId]) => {
+    const winEl = document.getElementById(elementId);
+    windowManager.register(key, winEl);
+  });
 }
 
 function setupMenus() {
@@ -76,33 +108,50 @@ function runAction(action) {
     shutdownScreen.classList.remove('hidden');
     return;
   }
-}
 
-function setupWindows() {
-  const finderEl = document.getElementById('window-finder');
-  const aboutEl = document.getElementById('window-about');
-  const trashEl = document.getElementById('window-trash');
-  windowManager.register('finder', finderEl);
-  windowManager.register('about', aboutEl);
-  windowManager.register('trash', trashEl);
+  if (action === 'open-finder') return windowManager.open('finder');
+  if (action === 'new-note') return windowManager.open('notes');
+  if (action === 'close-window') return windowManager.closeActive();
+
+  if (action === 'clean-up') return desktop.cleanUpIcons();
+  if (action === 'toggle-grid') return desktop.toggleGrid();
+  if (action === 'bring-all-front') return windowManager.bringAllToFront();
+  if (action === 'empty-trash') {
+    windowManager.open('trash');
+    document.getElementById('empty-trash-btn').click();
+    return;
+  }
+
+  if (['undo', 'redo', 'cut', 'copy', 'paste'].includes(action)) {
+    apps.handleEditAction(action);
+  }
 }
 
 async function setupDesktop() {
   const icons = [
-    { key: 'floppy', src: 'assets/floppy disk icon.png', label: 'system 1.1 finder 1', app: 'finder', position: 'right-top' },
+    { key: 'floppy', src: 'assets/floppy disk icon.png', label: 'Finder', app: 'finder', position: 'right-top' },
     { key: 'trash', src: 'assets/trash icon.png', label: 'Trash', app: 'trash', position: 'right-bottom' }
   ];
+
   await desktop.init(icons);
+
   desktopEl.addEventListener('click', (event) => {
     if (!event.target.closest('.desktop-icon')) desktop.clearSelection();
   });
 }
 
-function init() {
+powerOnBtn.addEventListener('click', bootSystem);
+window.addEventListener('resize', () => {
+  windowManager.clampToDesktop();
+  desktop.cleanUpIcons();
+});
+
+async function init() {
   setupWindows();
   setupMenus();
+  setupClock();
+  apps.init();
   bootSystem();
 }
 
-powerOnBtn.addEventListener('click', init);
 init();
