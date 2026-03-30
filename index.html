@@ -1,68 +1,71 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang=""en">
 <head>
-  <meta charset="UTF-8" />
+  <meta charset=""UTF-8" />
   <meta name=""viewport" content=""width=device-width, initial-scale="1.0" />
   <title>Macintosh System 1 Web OS</title>
-  <link rel=""stylesheet" href="styles.css" />
+  <link rel=""stylesheet" href=""styles.css" />
 </head>
 <body>
-  <div id="boot-screen" class=""boot-screen">
-    <div class="boot-window">
+  <div id=""boot-screen" class=""boot-screen">
+    <div class=""boot-window">
       <div class=""boot-title">Macintosh</div>
-      <div class="boot-content">
-        <div class=""boot-icon"><img src="assets/apple-logo.png" alt="Apple logo" /></div>
+      <div class=""boot-content">
+        <div class=""boot-icon"><img src=""assets/apple-logo.png" alt=""Apple logo" /></div>
         <p>Starting up...</p>
         <div class=""progress"><div id=""boot-progress"></div></div>
       </div>
     </div>
   </div>
 
-  <div id=""shutdown-screen" class="shutdown-screen hidden">
-    <div class="shutdown-message">It is now safe to close this browser tab.</div>
+  <div id=""shutdown-screen" class=""shutdown-screen hidden">
+    <div class=""shutdown-message">It is now safe to close this browser tab.</div>
     <button id=""power-on">Power On</button>
   </div>
 
-  <div id="os" class=""os hidden">
+  <div id=""os" class=""os hidden">
     <header class=""menu-bar">
-      <div class="menu-left">
-        <button class=""menu-item apple" data-menu="apple" aria-label="Apple Menu"><img src=""assets/apple-logo.png" alt=""Apple menu" /></button>
-        <div class=""menu-item" data-menu="file">File</div>
-        <div class=""menu-item" data-menu="edit">Edit</div>
-        <div class="menu-item" data-menu="view">View</div>
+      <div class=""menu-left">
+        <button class=""menu-item apple" data-menu=""apple" aria-label=""Apple Menu"><img src=""assets/apple-logo.png" alt=""Apple menu" /></button>
+        <div class=""menu-item" data-menu=""file">File</div>
+        <div class=""menu-item" data-menu=""edit">Edit</div>
+        <div class=""menu-item" data-menu=""view">View</div>
         <div class=""menu-item" data-menu=""special">Special</div>
       </div>
 
-      <div class=""dropdown hidden" id="menu-apple">
+      <div class=""dropdown hidden" id=""menu-apple">
         <button data-action=""about">About This Macintosh</button>
-        <button data-action="restart">Restart</button>
-        <button data-action="shutdown">Shut Down</button>
+        <button data-action=""restart">Restart</button>
+        <button data-action=""shutdown">Shut Down</button>
       </div>
       <div class=""dropdown hidden" id=""menu-file">
         <button data-action=""new-note">New Note</button>
         <button data-action=""open-finder">Open Macintosh HD</button>
-        <button data-action="close-window">Close Window</button>
+        <button data-action=""close-window">Close Window</button>
       </div>
-      <div class="dropdown hidden" id=""menu-edit">
+      <div class=""dropdown hidden" id=""menu-edit">
         <button data-action=""undo">Undo</button>
         <button data-action=""redo">Redo</button>
         <button data-action=""cut">Cut</button>
-        <button data-action="copy">Copy</button>
-        <button data-action="paste">Paste</button>
+        <button data-action=""copy">Copy</button>
+        <button data-action=""paste">Paste</button>
       </div>
-      <div class="dropdown hidden" id=""menu-view">
+      <div class=""dropdown hidden" id=""menu-view">
         <button data-action=""clean-up">Clean Up Icons</button>
-        <button data-action="toggle-grid">Toggle Desktop Grid</button>
+        <button data-action=""toggle-grid">Toggle Desktop Grid</button>
       </div>
-      <div class=""dropdown hidden" id="menu-special">
+      <div class=""dropdown hidden" id=""menu-special">
         <button data-action=""bring-all-front">Bring All to Front</button>
-        <button data-action="empty-trash">Empty Trash</button>
+        <button data-action=""empty-trash">Empty Trash</button>
       </div>
     </header>
 
-    <main id=""desktop" class=""desktop pattern-grid"></main>
+    <main id=""desktop" class=""desktop pattern-grid">
+      <section id=""desktop-icons" class=""desktop-icons" aria-label=""Desktop Icons"></section>
+    </main>
   </div>
 
-  <script src="js/main.js"></script>
+  <script src=""js/desktop.js"></script>
+  <script src=""js/main.js"></script>
 </body>
 </html>

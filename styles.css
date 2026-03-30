@@ -230,3 +230,47 @@ body {
 .pattern-plain {
   background: #d6d6d6;
 }
+
+.desktop-icons {
+  position: absolute;
+  inset: 0;
+}
+
+.desktop-icon {
+  position: absolute;
+  width: 86px;
+  padding: 4px;
+  text-align: center;
+  border: 1px solid transparent;
+  cursor: default;
+  transition: transform 90ms linear, background 90ms linear;
+}
+
+.desktop-icon:hover {
+  background: rgba(255, 255, 255, 0.45);
+}
+
+.desktop-icon:active {
+  transform: translateY(1px);
+}
+
+.desktop-icon.selected {
+  border-color: #000;
+  background: rgba(255, 255, 255, 0.45);
+}
+
+.icon-image {
+  height: 36px;
+  display: grid;
+  place-items: center;
+}
+
+.icon-image img {
+  width: 34px;
+  height: 34px;
+}
+
+.icon-label {
+  margin-top: 4px;
+  font-size: 12px;
+}

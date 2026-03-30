@@ -3,6 +3,10 @@ const bootProgress = document.getElementById('boot-progress');
 const shutdownScreen = document.getElementById('shutdown-screen');
 const powerOnBtn = document.getElementById('power-on');
 const os = document.getElementById('os');
+const desktopEl = document.getElementById('desktop');
+const desktopIconsEl = document.getElementById('desktop-icons');
+
+const desktop = new DesktopManager(desktopEl, desktopIconsEl, () => {});
 
 function bootSystem() {
   os.classList.add('hidden');
@@ -68,8 +72,22 @@ function runAction(action) {
   }
 }
 
+async function setupDesktop() {
+  const icons = [
+    { key: 'floppy', src: 'assets/floppy disk icon.png', label: 'system 1.1 finder 1', app: 'finder', position: 'right-top' },
+    { key: 'trash', src: 'assets/trash icon.png', label: 'Trash', app: 'trash', position: 'right-bottom' }
+  ];
+
+  await desktop.init(icons);
+
+  desktopEl.addEventListener('click', (event) => {
+    if (!event.target.closest('.desktop-icon')) desktop.clearSelection();
+  });
+}
+
 function init() {
   setupMenus();
+  setupDesktop();
   bootSystem();
 }
 
