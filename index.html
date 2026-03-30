@@ -39,7 +39,6 @@
         <button data-action="shutdown">Shut Down</button>
       </div>
       <div class="dropdown hidden" id="menu-file">
-        <button data-action="new-note">New Note</button>
         <button data-action="open-finder">Open Macintosh HD</button>
         <button data-action="close-window">Close Window</button>
       </div>
@@ -62,9 +61,53 @@
 
     <main id="desktop" class="desktop pattern-grid">
       <section id="desktop-icons" class="desktop-icons" aria-label="Desktop Icons"></section>
+
+      <section class="window hidden" id="window-finder" style="left: 180px; top: 80px; width: 520px; height: 360px;">
+        <div class="title-bar">
+          <button class="w-btn close" data-close="window-finder" aria-label="Close"></button>
+          <span>Finder - Macintosh HD</span>
+          <button class="w-btn zoom" aria-label="Zoom">+</button>
+        </div>
+        <div class="window-content finder-wrap">
+          <div class="finder-header">
+            <span>Name</span>
+            <span>Type</span>
+            <span>Action</span>
+          </div>
+          <div id="finder-files" class="finder-files"></div>
+        </div>
+        <div class="resize-handle" aria-hidden="true"></div>
+      </section>
+
+      <section class="window hidden" id="window-about" style="left: 140px; top: 90px; width: 430px; height: 250px;">
+        <div class="title-bar">
+          <button class="w-btn close" data-close="window-about" aria-label="Close"></button>
+          <span>About This Macintosh</span>
+          <button class="w-btn zoom" aria-label="Zoom">+</button>
+        </div>
+        <div class="window-content">
+          <h3>Macintosh System 1 (Web Edition)</h3>
+          <p>Classic one-bit UI with draggable icons, Finder, and retro apps.</p>
+          <p>Double-click icons to open applications.</p>
+        </div>
+        <div class="resize-handle" aria-hidden="true"></div>
+      </section>
+
+      <section class="window hidden" id="window-trash" style="left: 360px; top: 230px; width: 320px; height: 200px;">
+        <div class="title-bar">
+          <button class="w-btn close" data-close="window-trash" aria-label="Close"></button>
+          <span>Trash</span>
+          <button class="w-btn zoom" aria-label="Zoom">+</button>
+        </div>
+        <div class="window-content">
+          <p id="trash-status">Trash is empty.</p>
+        </div>
+        <div class="resize-handle" aria-hidden="true"></div>
+      </section>
     </main>
   </div>
 
+  <script src="js/window-manager.js"></script>
   <script src="js/desktop.js"></script>
   <script src="js/main.js"></script>
 </body>

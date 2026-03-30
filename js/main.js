@@ -6,7 +6,11 @@ const os = document.getElementById('os');
 const desktopEl = document.getElementById('desktop');
 const desktopIconsEl = document.getElementById('desktop-icons');
 
-const desktop = new DesktopManager(desktopEl, desktopIconsEl, () => {});
+const windowManager = new WindowManager(desktopEl, null);
+const desktop = new DesktopManager(desktopEl, desktopIconsEl, (appName) => {
+  if (appName === 'finder') windowManager.open('finder');
+  if (appName === 'trash') windowManager.open('trash');
+});
 
 function bootSystem() {
   os.classList.add('hidden');
@@ -24,6 +28,7 @@ function bootSystem() {
       setTimeout(() => {
         bootScreen.classList.add('hidden');
         os.classList.remove('hidden');
+        setupDesktop();
       }, 220);
     }
   }, 42);
@@ -64,6 +69,7 @@ function setupMenus() {
 }
 
 function runAction(action) {
+  if (action === 'about') return windowManager.open('about');
   if (action === 'restart') return bootSystem();
   if (action === 'shutdown') {
     os.classList.add('hidden');
@@ -72,22 +78,29 @@ function runAction(action) {
   }
 }
 
+function setupWindows() {
+  const finderEl = document.getElementById('window-finder');
+  const aboutEl = document.getElementById('window-about');
+  const trashEl = document.getElementById('window-trash');
+  windowManager.register('finder', finderEl);
+  windowManager.register('about', aboutEl);
+  windowManager.register('trash', trashEl);
+}
+
 async function setupDesktop() {
   const icons = [
     { key: 'floppy', src: 'assets/floppy disk icon.png', label: 'system 1.1 finder 1', app: 'finder', position: 'right-top' },
     { key: 'trash', src: 'assets/trash icon.png', label: 'Trash', app: 'trash', position: 'right-bottom' }
   ];
-
   await desktop.init(icons);
-
   desktopEl.addEventListener('click', (event) => {
     if (!event.target.closest('.desktop-icon')) desktop.clearSelection();
   });
 }
 
 function init() {
+  setupWindows();
   setupMenus();
-  setupDesktop();
   bootSystem();
 }
 
