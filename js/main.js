@@ -16,6 +16,7 @@ const appIdMap = {
   about: 'window-about',
   finder: 'window-finder',
   paint: 'window-paint',
+  notes: 'window-notes',
   calculator: 'window-calculator',
   trash: 'window-trash'
 };
