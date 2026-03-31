@@ -15,8 +15,8 @@ const apps = new AppsManager({ windowManager, desktopEl });
 const appIdMap = {
   about: 'window-about',
   finder: 'window-finder',
-  paint: 'window-paint',
   notes: 'window-notes',
+  paint: 'window-paint',
   calculator: 'window-calculator',
   control: 'window-control',
   trash: 'window-trash'

@@ -5,6 +5,10 @@ class AppsManager {
     this.desktopEl = desktopEl;
 
     this.files = [];
+    this.notes = {
+      undoStack: [],
+      redoStack: []
+    };
     this.paint = {
       tool: 'pencil',
       drawing: false,
@@ -21,17 +25,18 @@ class AppsManager {
     this.setupCalculator();
     this.setupControlPanel();
     this.setupPaint();
+    this.setupTrash();
 
     this.bootstrapFiles();
     this.renderFinderFiles();
   }
 
   bootstrapFiles() {
-    // v12: System utilities - complete system with all apps from previous versions
+    // Finder starts with app shortcuts and fills with downloaded files later.
     this.files = [
-      { name: 'Calculator', type: 'Application', action: () => this.openWindow('calculator') },
-      { name: 'MacPaint', type: 'Application', action: () => this.openWindow('paint') },
       { name: 'Write', type: 'Application', action: () => this.openWindow('notes') },
+      { name: 'MacPaint', type: 'Application', action: () => this.openWindow('paint') },
+      { name: 'Calculator', type: 'Application', action: () => this.openWindow('calculator') },
       { name: 'Control Panel', type: 'Application', action: () => this.openWindow('control') },
       { name: 'About This Macintosh', type: 'Application', action: () => this.openWindow('about') }
     ];
@@ -105,9 +110,38 @@ class AppsManager {
     const notes = document.getElementById('notes-area');
     notes.value = localStorage.getItem('system1-note') || '';
 
+    // Initialize undo/redo stack with current value
+    this.notes.undoStack = [];
+    this.notes.redoStack = [];
+    if (notes.value) {
+      this.notes.undoStack.push(notes.value);
+    }
+
+    // Track changes for undo/redo - capture state BEFORE change
+    notes.addEventListener('keydown', (e) => {
+      // Save state before the key is processed
+      if (!['Control', 'Shift', 'Alt', 'Meta', 'ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown'].includes(e.key)) {
+        this.notes.undoStack.push(notes.value);
+        this.notes.redoStack = [];
+        if (this.notes.undoStack.length > 50) {
+          this.notes.undoStack.shift();
+        }
+      }
+    });
+
+    // Save after input for next keystroke
     notes.addEventListener('input', () => {
       localStorage.setItem('system1-note', notes.value);
     });
+
+    // Preserve selection on undo/redo
+    const saveSelection = () => {
+      notes.dataset.selectionStart = notes.selectionStart;
+      notes.dataset.selectionEnd = notes.selectionEnd;
+    };
+
+    notes.addEventListener('click', saveSelection);
+    notes.addEventListener('keydown', saveSelection);
   }
 
   setupCalculator() {
@@ -390,6 +424,63 @@ class AppsManager {
       if (action === 'undo') document.getElementById('paint-undo').click();
       if (action === 'redo') document.getElementById('paint-redo').click();
       return;
+    }
+
+    if (active === 'notes') {
+      const notes = document.getElementById('notes-area');
+      notes.focus();
+      
+      if (action === 'undo') {
+        if (this.notes.undoStack.length > 1) {
+          this.notes.redoStack.push(this.notes.undoStack.pop());
+          notes.value = this.notes.undoStack[this.notes.undoStack.length - 1];
+          localStorage.setItem('system1-note', notes.value);
+        }
+        return;
+      }
+      
+      if (action === 'redo') {
+        if (this.notes.redoStack.length > 0) {
+          const state = this.notes.redoStack.pop();
+          this.notes.undoStack.push(state);
+          notes.value = state;
+          localStorage.setItem('system1-note', notes.value);
+        }
+        return;
+      }
+
+      if (action === 'cut') {
+        const selected = notes.value.substring(notes.selectionStart, notes.selectionEnd);
+        if (selected) {
+          navigator.clipboard.writeText(selected);
+          notes.value = notes.value.substring(0, notes.selectionStart) + notes.value.substring(notes.selectionEnd);
+          localStorage.setItem('system1-note', notes.value);
+          this.notes.undoStack.push(notes.value);
+          this.notes.redoStack = [];
+        }
+        return;
+      }
+
+      if (action === 'copy') {
+        const selected = notes.value.substring(notes.selectionStart, notes.selectionEnd);
+        if (selected) {
+          navigator.clipboard.writeText(selected);
+        }
+        return;
+      }
+
+      if (action === 'paste') {
+        navigator.clipboard.readText().then(text => {
+          const start = notes.selectionStart;
+          const end = notes.selectionEnd;
+          notes.value = notes.value.substring(0, start) + text + notes.value.substring(end);
+          localStorage.setItem('system1-note', notes.value);
+          notes.selectionStart = notes.selectionEnd = start + text.length;
+          this.notes.undoStack.push(notes.value);
+          this.notes.redoStack = [];
+        });
+        return;
+      }
     }
 
     if (action === 'undo') document.execCommand('undo');

@@ -50,6 +50,7 @@ class DesktopManager {
   attachIconInteraction(iconEl, appName) {
     let dragStart = null;
     let hasMoved = false;
+    let draggedElement = null;
 
     iconEl.addEventListener('click', (event) => {
       event.stopPropagation();
@@ -62,6 +63,7 @@ class DesktopManager {
     });
 
     iconEl.addEventListener('mousedown', (event) => {
+      draggedElement = iconEl;
       const rect = iconEl.getBoundingClientRect();
       const deskRect = this.desktopEl.getBoundingClientRect();
       dragStart = {
@@ -74,8 +76,8 @@ class DesktopManager {
       this.selectIcon(iconEl);
     });
 
-    window.addEventListener('mousemove', (event) => {
-      if (!dragStart) return;
+    const handleMouseMove = (event) => {
+      if (!dragStart || draggedElement !== iconEl) return;
       hasMoved = true;
 
       const left = Math.max(0, Math.min(event.clientX - dragStart.deskLeft - dragStart.offsetX, this.desktopEl.clientWidth - iconEl.offsetWidth));
@@ -83,10 +85,10 @@ class DesktopManager {
 
       iconEl.style.left = `${left}px`;
       iconEl.style.top = `${top}px`;
-    });
+    };
 
-    window.addEventListener('mouseup', () => {
-      if (!dragStart) return;
+    const handleMouseUp = () => {
+      if (!dragStart || draggedElement !== iconEl) return;
 
       if (hasMoved && this.gridEnabled) {
         this.snapIconToGrid(iconEl);
@@ -94,7 +96,11 @@ class DesktopManager {
 
       dragStart = null;
       hasMoved = false;
-    });
+      draggedElement = null;
+    };
+
+    document.addEventListener('mousemove', handleMouseMove);
+    document.addEventListener('mouseup', handleMouseUp);
   }
 
   selectIcon(iconEl) {
@@ -120,15 +126,24 @@ class DesktopManager {
 
   toggleGrid() {
     this.gridEnabled = !this.gridEnabled;
-    if (this.gridEnabled) this.cleanUpIcons();
+    if (this.gridEnabled) {
+      this.desktopEl.classList.add('grid-mode');
+      // Snap all icons to grid when enabling grid mode
+      const iconElements = this.iconsContainerEl.querySelectorAll('.desktop-icon');
+      iconElements.forEach((iconEl) => {
+        this.snapIconToGrid(iconEl);
+      });
+    } else {
+      this.desktopEl.classList.remove('grid-mode');
+    }
   }
 
   gridPosition(index) {
     const column = Math.floor(index / 6);
     const row = index % 6;
     return {
-      x: 24 + column * 96,
-      y: 18 + row * 88
+      x: 24 + column * 85,
+      y: 18 + row * 70
     };
   }
 
@@ -168,8 +183,8 @@ class DesktopManager {
     const x = parseInt(iconEl.style.left || '0', 10);
     const y = parseInt(iconEl.style.top || '0', 10);
 
-    const gx = Math.max(24, Math.round((x - 24) / 96) * 96 + 24);
-    const gy = Math.max(18, Math.round((y - 18) / 88) * 88 + 18);
+    const gx = Math.max(24, Math.round((x - 24) / 85) * 85 + 24);
+    const gy = Math.max(18, Math.round((y - 18) / 70) * 70 + 18);
 
     iconEl.style.left = `${gx}px`;
     iconEl.style.top = `${gy}px`;

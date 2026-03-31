@@ -63,8 +63,25 @@ class WindowManager {
   }
 
   bringAllToFront() {
+    const visibleWindows = [];
     for (const [id, win] of this.windows.entries()) {
-      if (!win.classList.contains('hidden')) this.bringToFront(id);
+      if (!win.classList.contains('hidden')) {
+        visibleWindows.push({ id, win });
+      }
+    }
+
+    // Bring all visible windows to front in order
+    visibleWindows.forEach(({ id, win }) => {
+      this.z += 1;
+      win.style.zIndex = String(this.z);
+    });
+
+    // Update active window title to the topmost one
+    if (visibleWindows.length > 0) {
+      const topmost = visibleWindows[visibleWindows.length - 1];
+      this.activeWindowId = topmost.id;
+      const title = topmost.win.querySelector('.title-bar span')?.textContent || 'Finder';
+      if (this.activeAppEl) this.activeAppEl.textContent = title;
     }
   }
 
