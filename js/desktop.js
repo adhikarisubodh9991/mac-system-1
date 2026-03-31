@@ -21,15 +21,18 @@ class DesktopManager {
 
   async renderIcons() {
     this.iconsContainerEl.innerHTML = '';
+
     for (const [index, icon] of this.icons.entries()) {
       const iconEl = document.createElement('article');
       iconEl.className = 'desktop-icon';
       iconEl.dataset.app = icon.app;
       iconEl.dataset.index = String(index);
+
       iconEl.innerHTML = `
         <div class="icon-image"><img alt="${icon.label}" /></div>
         <div class="icon-label">${icon.label}</div>
       `;
+
       const img = iconEl.querySelector('img');
       img.src = icon.src || FALLBACK_ICONS[icon.key] || FALLBACK_ICONS.finder;
 
@@ -41,6 +44,7 @@ class DesktopManager {
       this.iconsContainerEl.appendChild(iconEl);
     }
   }
+
 
 
   attachIconInteraction(iconEl, appName) {

@@ -93,6 +93,30 @@
         <div class="resize-handle" aria-hidden="true"></div>
       </section>
 
+      <section class="window hidden" id="window-paint" style="left: 210px; top: 110px; width: 620px; height: 460px;">
+        <div class="title-bar">
+          <button class="w-btn close" data-close="window-paint" aria-label="Close">×</button>
+          <span>MacPaint</span>
+          <button class="w-btn zoom" aria-label="Zoom">+</button>
+        </div>
+        <div class="window-content paint-wrap">
+          <aside id="paint-toolbar" class="paint-toolbar" aria-label="Paint Tools">
+            <button data-tool="pencil" class="active">Pencil</button>
+            <button data-tool="line">Line</button>
+            <button data-tool="rect">Rectangle</button>
+            <button data-tool="circle">Circle</button>
+            <button data-tool="fill">Fill</button>
+            <button id="paint-undo">Undo</button>
+            <button id="paint-redo">Redo</button>
+            <button id="paint-clear">Clear</button>
+          </aside>
+          <div class="paint-canvas-wrap">
+            <canvas id="paint-canvas" width="384" height="256"></canvas>
+          </div>
+        </div>
+        <div class="resize-handle" aria-hidden="true"></div>
+      </section>
+
       <section class="window hidden" id="window-calculator" style="left: 280px; top: 180px; width: 280px; height: 340px;">
         <div class="title-bar">
           <button class="w-btn close" data-close="window-calculator" aria-label="Close">×</button>
@@ -102,30 +126,6 @@
         <div class="window-content">
           <input id="calc-display" type="text" readonly value="0" />
           <div id="calc-grid" class="calc-grid"></div>
-        </div>
-        <div class="resize-handle" aria-hidden="true"></div>
-      </section>
-
-      <section class="window hidden" id="window-control" style="left: 250px; top: 140px; width: 390px; height: 250px;">
-        <div class="title-bar">
-          <button class="w-btn close" data-close="window-control" aria-label="Close">×</button>
-          <span>Control Panel</span>
-          <button class="w-btn zoom" aria-label="Zoom">+</button>
-        </div>
-        <div class="window-content control-panel">
-          <label>Desktop Pattern</label>
-          <div class="pattern-buttons">
-            <button data-pattern="pattern-grid">Grid</button>
-            <button data-pattern="pattern-dots">Dots</button>
-            <button data-pattern="pattern-stripes">Stripes</button>
-            <button data-pattern="pattern-plain">Plain</button>
-          </div>
-          <label>Font Size</label>
-          <div class="pattern-buttons">
-            <button data-font="13">Small</button>
-            <button data-font="15">Medium</button>
-            <button data-font="17">Large</button>
-          </div>
         </div>
         <div class="resize-handle" aria-hidden="true"></div>
       </section>
