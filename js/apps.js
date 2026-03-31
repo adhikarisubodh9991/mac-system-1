@@ -17,20 +17,22 @@ class AppsManager {
   }
 
   init() {
-    this.setupCalculator();
-    this.setupPaint();
     this.setupNotes();
+    this.setupCalculator();
+    this.setupControlPanel();
+    this.setupPaint();
 
     this.bootstrapFiles();
     this.renderFinderFiles();
   }
 
   bootstrapFiles() {
-    // v11: Text/Write app version - adds Write to previous paint version
+    // v12: System utilities - complete system with all apps from previous versions
     this.files = [
       { name: 'Calculator', type: 'Application', action: () => this.openWindow('calculator') },
       { name: 'MacPaint', type: 'Application', action: () => this.openWindow('paint') },
       { name: 'Write', type: 'Application', action: () => this.openWindow('notes') },
+      { name: 'Control Panel', type: 'Application', action: () => this.openWindow('control') },
       { name: 'About This Macintosh', type: 'Application', action: () => this.openWindow('about') }
     ];
   }
