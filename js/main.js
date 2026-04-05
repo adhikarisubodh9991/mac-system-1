@@ -44,7 +44,6 @@ function bootSystem() {
         os.classList.remove('hidden');
         setupDesktop();
         desktop.cleanUpIcons();
-        windowManager.open('finder');
       }, 220);
     }
   }, 42);

@@ -486,9 +486,61 @@ body {
   gap: 6px;
 }
 
+#window-calculator .window-content {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+#calc-display {
+  text-align: right;
+  padding: 8px 10px;
+  min-height: 42px;
+  font-size: clamp(16px, 2.1vw, 28px);
+}
+
+#window-calculator .calc-grid {
+  flex: 1;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+#window-calculator .calc-grid button {
+  min-height: 42px;
+  font-size: clamp(14px, 1.7vw, 22px);
+}
+
 .control-panel {
   display: grid;
+  gap: 10px;
+  align-content: start;
+}
+
+#window-control .window-content {
+  padding: 12px;
+}
+
+#window-control .control-panel label {
+  font-weight: 700;
+}
+
+#window-control .pattern-buttons {
   gap: 8px;
+}
+
+#window-control .pattern-buttons button {
+  min-width: 76px;
+}
+
+@media (min-width: 1200px) {
+  #window-control .control-panel {
+    grid-template-columns: 1fr 1fr;
+    column-gap: 14px;
+    row-gap: 10px;
+  }
+
+  #window-control .control-panel label {
+    grid-column: span 2;
+  }
 }
 
 .pattern-buttons {
